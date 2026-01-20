@@ -1,9 +1,6 @@
 package br.com.fernandes.scheduler_backend_java.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +20,8 @@ public class AgendamentoEntity implements Serializable {
     Long id;
     LocalDateTime dataAgendamento;
     BigDecimal valor;
+    @ManyToOne(fetch = FetchType.LAZY)  //evita trazer a pessoa sem necessidade (boa prática)
+    @JoinColumn(name = "pessoa_id", nullable = false)
     PessoaEntity pessoa;
 
 }
