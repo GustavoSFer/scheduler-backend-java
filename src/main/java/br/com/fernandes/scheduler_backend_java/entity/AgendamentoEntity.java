@@ -20,7 +20,7 @@ public class AgendamentoEntity implements Serializable {
     Long id;
     LocalDateTime dataAgendamento;
     BigDecimal valor;
-    @ManyToOne(fetch = FetchType.LAZY)  //evita trazer a pessoa sem necessidade (boa prática)
+    @ManyToOne(fetch = FetchType.LAZY)  //Evita trazer a pessoa sem necessidade (boa prática)
     @JoinColumn(name = "pessoa_id", nullable = false)
     PessoaEntity pessoa;
 
