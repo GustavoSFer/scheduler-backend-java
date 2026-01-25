@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "Agenda")
 public class AgendamentoEntity implements Serializable {
 
     @Id
