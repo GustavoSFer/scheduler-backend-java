@@ -7,6 +7,8 @@ import br.com.fernandes.scheduler_backend_java.repository.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PessoaService {
 
@@ -17,5 +19,9 @@ public class PessoaService {
         PessoaEntity pessoaEntity = PessoaMappers.PessoaDtoToEntity(pessoa);
 
         return pessoaRepository.save(pessoaEntity);
+    }
+
+    public List<PessoaEntity> findAll() {
+        return pessoaRepository.findAll();
     }
 }

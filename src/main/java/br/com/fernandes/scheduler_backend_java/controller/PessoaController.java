@@ -5,12 +5,11 @@ import br.com.fernandes.scheduler_backend_java.entity.PessoaEntity;
 import br.com.fernandes.scheduler_backend_java.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/pessoas")
@@ -24,5 +23,12 @@ public class PessoaController {
         PessoaEntity pessoaCriada = pessoaService.create(pessoa);
 
         return ResponseEntity.ok().body(pessoaCriada);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PessoaEntity>> findAll() {
+        List<PessoaEntity> pessoas = pessoaService.findAll();
+
+        return ResponseEntity.ok().body(pessoas);
     }
 }
