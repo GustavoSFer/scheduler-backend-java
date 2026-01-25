@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -19,11 +17,11 @@ public class GlobalExceptionHandler {
     // Captura erros de validação do corpo (@RequestBody)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity< ErrorResponse> handleValidationErrors(MethodArgumentNotValidException ex) {
-        List<Error> error = new ArrayList<>();
+        List<ApiError> error = new ArrayList<>();
 
         for (FieldError e : ex.getBindingResult().getFieldErrors()) {
             error.add(
-                new Error(
+                new ApiError(
                     HttpStatus.BAD_REQUEST.value(),
                     e.getDefaultMessage()
                 )
