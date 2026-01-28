@@ -11,6 +11,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.annotation.Description;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -42,6 +44,26 @@ class PessoaServiceTest {
                 () -> assertEquals(pessoaMocado.getEmail(), pessoa.getEmail()),
                 () -> assertEquals(pessoaMocado.getTelefone(), pessoa.getTelefone()),
                 () -> assertEquals(pessoaMocado.getId(), 1L)
+        );
+    }
+
+    @Test
+    @Description("Buscando a lista de pessoas com sucesso")
+    void listarPessoaComSucesso() {
+        //Given
+        List<PessoaEntity> pessoasMock = List.of(PessoasEntityMock.pessoaEntityCriada());
+
+        //When
+        when(pessoaRepository.findAll()).thenReturn(pessoasMock);
+
+        List<PessoaEntity> pessoas = pessoaService.findAll();
+
+        //Then
+        assertAll(
+                () -> assertEquals(pessoasMock.get(0).getNome(), pessoas.get(0).getNome()),
+                () -> assertEquals(pessoasMock.get(0).getEmail(), pessoas.get(0).getEmail()),
+                () -> assertEquals(pessoasMock.get(0).getTelefone(), pessoas.get(0).getTelefone()),
+                () -> assertEquals(pessoasMock.get(0).getId(), 1L)
         );
     }
 
