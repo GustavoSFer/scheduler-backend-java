@@ -1,6 +1,7 @@
 package br.com.fernandes.scheduler_backend_java.controller;
 
 import br.com.fernandes.scheduler_backend_java.dto.PessoaDTO;
+import br.com.fernandes.scheduler_backend_java.entity.PessoaEntity;
 import br.com.fernandes.scheduler_backend_java.mocks.pessoas.PessoasEntityMock;
 import br.com.fernandes.scheduler_backend_java.service.PessoaService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -13,7 +14,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -65,6 +69,17 @@ class PessoaControllerTest {
 
     @Test
     @DisplayName("Deve listar todas as pessoas com sucesso")
-    void findAll() {
+    void findAll() throws Exception {
+        List<PessoaEntity> pessoasMock = List.of(PessoasEntityMock.pessoaEntityCriada());
+
+        when(pessoaService.findAll()).thenReturn(pessoasMock);
+
+        mockMvc.perform(get(PATH)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].nome").value("Gustavo Fernandes"))
+                .andExpect(jsonPath("$[0].email").value("Gustavofernandes@gmail.com"))
+                .andExpect(jsonPath("$.[0].telefone").value("11969581233"));
     }
 }
