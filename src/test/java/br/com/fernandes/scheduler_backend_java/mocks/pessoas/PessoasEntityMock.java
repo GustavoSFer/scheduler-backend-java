@@ -1,5 +1,6 @@
 package br.com.fernandes.scheduler_backend_java.mocks.pessoas;
 
+import br.com.fernandes.scheduler_backend_java.dto.PessoaDTO;
 import br.com.fernandes.scheduler_backend_java.entity.PessoaEntity;
 
 public class PessoasEntityMock {
@@ -13,5 +14,13 @@ public class PessoasEntityMock {
         pessoa.setEmail("Gustavofernandes@gmail.com");
 
         return pessoa;
+    }
+
+    public static PessoaDTO PessoaEntityDTO() {
+        return new PessoaDTO(
+                "Fernando Silva",
+                "fernandinhoSilva@gmail.com",
+                "11987654321"
+        );
     }
 }
