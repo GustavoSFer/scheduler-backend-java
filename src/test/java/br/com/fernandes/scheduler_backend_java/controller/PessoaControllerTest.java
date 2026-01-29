@@ -82,4 +82,18 @@ class PessoaControllerTest {
                 .andExpect(jsonPath("$[0].email").value("Gustavofernandes@gmail.com"))
                 .andExpect(jsonPath("$.[0].telefone").value("11969581233"));
     }
+
+    @Test
+    @DisplayName("Deve retornar lista vazia quando não houver pessoas cadastradas")
+    void findAllListaVazia() throws Exception {
+        List<PessoaEntity> pessoasMock = List.of();
+
+        when(pessoaService.findAll()).thenReturn(pessoasMock);
+
+        mockMvc.perform(get(PATH)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()").value(0));
+    }
+
 }
