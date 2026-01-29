@@ -3,6 +3,7 @@ package br.com.fernandes.scheduler_backend_java.controller;
 import br.com.fernandes.scheduler_backend_java.dto.PessoaDTO;
 import br.com.fernandes.scheduler_backend_java.mocks.pessoas.PessoasEntityMock;
 import br.com.fernandes.scheduler_backend_java.service.PessoaService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -51,7 +52,15 @@ class PessoaControllerTest {
 
     @Test
     @DisplayName("Deve informar error ao criar pessoa com dados inválidos")
-    void createPessoaInvalido() {
+    void createPessoaInvalido() throws Exception {
+        PessoaDTO pessoaDTO = new PessoaDTO("", "emailinvalido", "123");
+
+        when(pessoaService.create(pessoaDTO)).thenReturn(PessoasEntityMock.pessoaEntityCriada());
+
+        mockMvc.perform(post(PATH)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(pessoaDTO)))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
