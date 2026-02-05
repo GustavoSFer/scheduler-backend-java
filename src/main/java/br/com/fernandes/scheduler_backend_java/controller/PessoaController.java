@@ -31,4 +31,11 @@ public class PessoaController {
 
         return ResponseEntity.ok().body(pessoas);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PessoaEntity> findById(@PathVariable Long id) {
+        PessoaEntity pessoa = pessoaService.findById(id);
+
+        return ResponseEntity.ok().body(pessoa);
+    }
 }

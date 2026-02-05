@@ -1,5 +1,6 @@
 package br.com.fernandes.scheduler_backend_java.exception;
 
+import br.com.fernandes.scheduler_backend_java.exception.pessoa.PessoaNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ public class GlobalExceptionHandler {
 
     // Captura erros de validação do corpo (@RequestBody)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity< ErrorResponse> handleValidationErrors(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ErrorResponse> handleValidationErrors(MethodArgumentNotValidException ex) {
         List<ApiError> error = new ArrayList<>();
 
         for (FieldError e : ex.getBindingResult().getFieldErrors()) {
@@ -36,6 +37,19 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<String> handleConstraintViolation(ConstraintViolationException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(PessoaNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handlePessoaNotFoundException(PessoaNotFoundException ex) {
+        List<ApiError> error = new ArrayList<>();
+        error.add(
+            new ApiError(
+                HttpStatus.NOT_FOUND.value(),
+                ex.getMensagem()
+            )
+        );
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(error));
     }
 
 }

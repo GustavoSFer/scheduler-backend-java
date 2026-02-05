@@ -2,12 +2,14 @@ package br.com.fernandes.scheduler_backend_java.service;
 
 import br.com.fernandes.scheduler_backend_java.dto.PessoaDTO;
 import br.com.fernandes.scheduler_backend_java.entity.PessoaEntity;
+import br.com.fernandes.scheduler_backend_java.exception.pessoa.PessoaNotFoundException;
 import br.com.fernandes.scheduler_backend_java.mapper.pessoaMapper.PessoaMappers;
 import br.com.fernandes.scheduler_backend_java.repository.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PessoaService {
@@ -26,7 +28,9 @@ public class PessoaService {
     }
 
     public PessoaEntity findById(Long id) {
-        return pessoaRepository.findById(id).orElse(null);
+        Optional<PessoaEntity> pessoa =  pessoaRepository.findById(id);
+
+        return pessoa.orElseThrow(() -> new PessoaNotFoundException("Pessoa com id " + id + " não encontrada."));
     }
 
     public PessoaEntity update(Long id, PessoaDTO pessoa) {
