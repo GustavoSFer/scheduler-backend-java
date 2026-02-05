@@ -13,4 +13,10 @@ public class PessoaMappers {
 
         return pessoa;
     }
+
+    public static void updatePessoaEntityFromDto(PessoaDTO pessoa, PessoaEntity pessoaExistente) {
+        pessoaExistente.setNome(pessoa.nome());
+        pessoaExistente.setEmail(pessoa.email());
+        pessoaExistente.setTelefone(pessoa.telefone());
+    }
 }

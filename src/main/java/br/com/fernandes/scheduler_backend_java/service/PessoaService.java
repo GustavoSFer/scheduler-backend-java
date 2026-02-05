@@ -24,4 +24,21 @@ public class PessoaService {
     public List<PessoaEntity> findAll() {
         return pessoaRepository.findAll();
     }
+
+    public PessoaEntity findById(Long id) {
+        return pessoaRepository.findById(id).orElse(null);
+    }
+
+    public PessoaEntity update(Long id, PessoaDTO pessoa) {
+        PessoaEntity pessoaExistente = pessoaRepository.findById(id).orElse(null);
+        if (pessoaExistente != null) {
+            PessoaMappers.updatePessoaEntityFromDto(pessoa, pessoaExistente);
+            return pessoaRepository.save(pessoaExistente);
+        }
+        return null;
+    }
+
+    public void deleteById(Long id) {
+        pessoaRepository.deleteById(id);
+    }
 }
