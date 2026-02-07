@@ -34,12 +34,11 @@ public class PessoaService {
     }
 
     public PessoaEntity update(Long id, PessoaDTO pessoa) {
-        PessoaEntity pessoaExistente = pessoaRepository.findById(id).orElse(null);
-        if (pessoaExistente != null) {
-            PessoaMappers.updatePessoaEntityFromDto(pessoa, pessoaExistente);
-            return pessoaRepository.save(pessoaExistente);
-        }
-        return null;
+        PessoaEntity pessoaExistente = findById(id);
+
+        PessoaMappers.updatePessoaEntityFromDto(pessoa, pessoaExistente);
+
+        return pessoaRepository.save(pessoaExistente);
     }
 
     public void deleteById(Long id) {
