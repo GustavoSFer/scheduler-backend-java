@@ -1,0 +1,42 @@
+package br.com.fernandes.scheduler_backend_java.service;
+
+import br.com.fernandes.scheduler_backend_java.dto.AgendamentoDTO;
+import br.com.fernandes.scheduler_backend_java.entity.AgendamentoEntity;
+import br.com.fernandes.scheduler_backend_java.entity.PessoaEntity;
+import br.com.fernandes.scheduler_backend_java.repository.AgendamentoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
+
+public class AgendamentoService {
+
+    @Autowired
+    private AgendamentoRepository agendamentoRepository;
+
+    @Autowired
+    private PessoaService pessoaService;
+
+    public AgendamentoEntity create(AgendamentoDTO agendamento) {
+        LocalDateTime now = LocalDateTime.now();
+        if (agendamento.dataAgendamento() == null || !agendamento.dataAgendamento().isAfter(now)) {
+            throw new RuntimeException("A data do agendamento deve ser futura.");
+        }
+
+        PessoaEntity pessoa = pessoaService.findById(agendamento.pessoa());
+        AgendamentoEntity agendamentoEntity = new AgendamentoEntity();
+        agendamentoEntity.setDataAgendamento(agendamento.dataAgendamento());
+        agendamentoEntity.setValor(agendamento.valor());
+        agendamentoEntity.setPago(agendamento.pago());
+        agendamentoEntity.setPessoa(pessoa);
+
+        return agendamentoRepository.save(agendamentoEntity);
+
+    }
+
+    public AgendamentoEntity findById(Long id) {
+        Optional<AgendamentoEntity> agendamento =  agendamentoRepository.findById(id);
+
+        return agendamento.orElseThrow(() -> new RuntimeException("Agendamento com id " + id + " não encontrado."));
+    }
+}
