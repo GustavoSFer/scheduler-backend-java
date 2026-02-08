@@ -4,6 +4,7 @@ import br.com.fernandes.scheduler_backend_java.exception.pessoa.PessoaNotFoundEx
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -52,4 +53,17 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(error));
     }
 
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleMessageNotReadableException(HttpMessageNotReadableException ex) {
+        List<ApiError> error = new ArrayList<>();
+
+        error.add(
+                new ApiError(
+                        HttpStatus.BAD_REQUEST.value(),
+                        "Valor inválido. Opções aceitas: PAGO, CANCELADO, ESTORNADO, PENDENTE."
+                )
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(error));
+    }
 }
