@@ -3,6 +3,7 @@ package br.com.fernandes.scheduler_backend_java.service;
 import br.com.fernandes.scheduler_backend_java.dto.AgendamentoDTO;
 import br.com.fernandes.scheduler_backend_java.entity.AgendamentoEntity;
 import br.com.fernandes.scheduler_backend_java.entity.PessoaEntity;
+import br.com.fernandes.scheduler_backend_java.exception.agendamento.AgendamentoNotFoundException;
 import br.com.fernandes.scheduler_backend_java.repository.AgendamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,6 @@ public class AgendamentoService {
     public AgendamentoEntity findById(Long id) {
         Optional<AgendamentoEntity> agendamento =  agendamentoRepository.findById(id);
 
-        return agendamento.orElseThrow(() -> new RuntimeException("Agendamento com id " + id + " não encontrado."));
+        return agendamento.orElseThrow(() -> new AgendamentoNotFoundException("Agendamento com id " + id + " não encontrado."));
     }
 }

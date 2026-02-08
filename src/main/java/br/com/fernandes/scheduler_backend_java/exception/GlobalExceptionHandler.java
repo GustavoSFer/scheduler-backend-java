@@ -1,5 +1,6 @@
 package br.com.fernandes.scheduler_backend_java.exception;
 
+import br.com.fernandes.scheduler_backend_java.exception.agendamento.AgendamentoNotFoundException;
 import br.com.fernandes.scheduler_backend_java.exception.pessoa.PessoaNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -61,6 +62,20 @@ public class GlobalExceptionHandler {
                 new ApiError(
                         HttpStatus.BAD_REQUEST.value(),
                         "Valor inválido. Opções aceitas: PAGO, CANCELADO, ESTORNADO, PENDENTE."
+                )
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(error));
+    }
+
+    @ExceptionHandler(AgendamentoNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleAgendamentoNotFound(AgendamentoNotFoundException ex) {
+        List<ApiError> error = new ArrayList<>();
+
+        error.add(
+                new ApiError(
+                        HttpStatus.BAD_REQUEST.value(),
+                        ex.getMsg()
                 )
         );
 
