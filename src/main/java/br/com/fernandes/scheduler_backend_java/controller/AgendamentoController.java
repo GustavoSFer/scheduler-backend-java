@@ -42,11 +42,22 @@ public class AgendamentoController {
     public ResponseEntity<List<AgendamentoResponseDTO>> findAll() {
         List<AgendamentoEntity> agendamentos = agendamentoService.findAll();
 
-        List<AgendamentoResponseDTO> agendamentoResponseDTO = agendamentos.stream()
+        List<AgendamentoResponseDTO> agendamentoResponseDTOS = agendamentos.stream()
                 .map(AgendamentoMapper::AgendamentoEntityToAgendamentoResponseDTO)
                 .collect(toList());
 
-        return ResponseEntity.ok().body(agendamentoResponseDTO);
+        return ResponseEntity.ok().body(agendamentoResponseDTOS);
+    }
+
+    @GetMapping("/today")
+    public ResponseEntity<List<AgendamentoResponseDTO>> findAllToday() {
+        List<AgendamentoEntity> agendamentos = agendamentoService.findAllToday();
+
+        List<AgendamentoResponseDTO> agendamentoResponseDTOS = agendamentos.stream()
+                .map(AgendamentoMapper::AgendamentoEntityToAgendamentoResponseDTO)
+                .collect(toList());
+
+        return ResponseEntity.ok().body(agendamentoResponseDTOS);
     }
 
 }

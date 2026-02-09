@@ -8,7 +8,9 @@ import br.com.fernandes.scheduler_backend_java.repository.AgendamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,5 +48,13 @@ public class AgendamentoService {
 
     public List<AgendamentoEntity> findAll() {
         return agendamentoRepository.findAll();
+    }
+
+    public List<AgendamentoEntity> findAllToday() {
+        LocalDate today = LocalDate.now(ZoneId.systemDefault());
+        LocalDateTime startOfDay = today.atStartOfDay();
+        LocalDateTime startOfNextDay = today.plusDays(1).atStartOfDay();
+
+        return agendamentoRepository.findAllByDataAgendamentoBetweenDay(startOfDay, startOfNextDay);
     }
 }
