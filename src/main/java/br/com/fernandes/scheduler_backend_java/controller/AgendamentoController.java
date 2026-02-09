@@ -10,6 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
+
 @RestController
 @RequestMapping("/agendamentos")
 public class AgendamentoController {
@@ -33,4 +38,16 @@ public class AgendamentoController {
         return ResponseEntity.ok().body(agendamentoResponseDTO);
     }
 
+    @GetMapping
+    public ResponseEntity<List<AgendamentoResponseDTO>> findAll() {
+        List<AgendamentoEntity> agendamentos = agendamentoService.findAll();
+
+        List<AgendamentoResponseDTO> agendamentoResponseDTO = agendamentos.stream()
+                .map(AgendamentoMapper::AgendamentoEntityToAgendamentoResponseDTO)
+                .collect(toList());
+
+        return ResponseEntity.ok().body(agendamentoResponseDTO);
+    }
+
 }
+

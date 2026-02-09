@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -41,5 +42,9 @@ public class AgendamentoService {
         Optional<AgendamentoEntity> agendamento =  agendamentoRepository.findById(id);
 
         return agendamento.orElseThrow(() -> new AgendamentoNotFoundException("Agendamento com id " + id + " não encontrado."));
+    }
+
+    public List<AgendamentoEntity> findAll() {
+        return agendamentoRepository.findAll();
     }
 }
