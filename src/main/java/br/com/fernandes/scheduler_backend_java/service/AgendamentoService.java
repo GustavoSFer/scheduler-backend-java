@@ -1,6 +1,7 @@
 package br.com.fernandes.scheduler_backend_java.service;
 
 import br.com.fernandes.scheduler_backend_java.dto.AgendamentoDTO;
+import br.com.fernandes.scheduler_backend_java.dto.AgendamentoUpdatePagamentoDTO;
 import br.com.fernandes.scheduler_backend_java.entity.AgendamentoEntity;
 import br.com.fernandes.scheduler_backend_java.entity.Enum.StatusPagamento;
 import br.com.fernandes.scheduler_backend_java.entity.PessoaEntity;
@@ -74,5 +75,12 @@ public class AgendamentoService {
         }
 
         return agendamentoRepository.findAllByDataAgendamentoBetweenDay(dataAgendamentoInicio, dataAgendamentoFim);
+    }
+
+    public AgendamentoEntity updatePagamento(Long id, AgendamentoUpdatePagamentoDTO agendamentoUpdatePagamentoDTO) {
+        AgendamentoEntity agendamento = findById(id);
+        agendamento.setPago(agendamentoUpdatePagamentoDTO.pago());
+
+        return agendamentoRepository.save(agendamento);
     }
 }

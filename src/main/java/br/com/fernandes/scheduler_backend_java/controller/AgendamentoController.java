@@ -2,6 +2,7 @@ package br.com.fernandes.scheduler_backend_java.controller;
 
 import br.com.fernandes.scheduler_backend_java.dto.AgendamentoDTO;
 import br.com.fernandes.scheduler_backend_java.dto.AgendamentoResponseDTO;
+import br.com.fernandes.scheduler_backend_java.dto.AgendamentoUpdatePagamentoDTO;
 import br.com.fernandes.scheduler_backend_java.entity.AgendamentoEntity;
 import br.com.fernandes.scheduler_backend_java.mapper.agendamentoMapper.AgendamentoMapper;
 import br.com.fernandes.scheduler_backend_java.service.AgendamentoService;
@@ -75,6 +76,15 @@ public class AgendamentoController {
 
         return ResponseEntity.ok().body(agendamentosFiltrados);
 
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<AgendamentoResponseDTO> updatePagamento(@PathVariable Long id, @RequestBody AgendamentoUpdatePagamentoDTO agendamentoUpdatePagamentoDTO) {
+        AgendamentoEntity agendamentoStatusPagamentoAtualizado = agendamentoService.updatePagamento(id, agendamentoUpdatePagamentoDTO);
+
+        AgendamentoResponseDTO agendamentoResponseDTO = AgendamentoMapper.AgendamentoEntityToAgendamentoResponseDTO(agendamentoStatusPagamentoAtualizado);
+
+        return ResponseEntity.ok().body(agendamentoResponseDTO);
     }
 
 }
