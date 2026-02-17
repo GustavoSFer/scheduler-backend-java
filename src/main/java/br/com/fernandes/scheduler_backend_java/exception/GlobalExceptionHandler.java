@@ -1,6 +1,7 @@
 package br.com.fernandes.scheduler_backend_java.exception;
 
 import br.com.fernandes.scheduler_backend_java.exception.agendamento.AgendamentoNotFoundException;
+import br.com.fernandes.scheduler_backend_java.exception.agendamento.FilterNullException;
 import br.com.fernandes.scheduler_backend_java.exception.pessoa.PessoaNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -76,6 +77,20 @@ public class GlobalExceptionHandler {
                 new ApiError(
                         HttpStatus.BAD_REQUEST.value(),
                         ex.getMsg()
+                )
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(error));
+    }
+
+    @ExceptionHandler(FilterNullException.class)
+    public ResponseEntity<ErrorResponse> handleFilterNullException(FilterNullException ex) {
+        List<ApiError> error = new ArrayList<>();
+
+        error.add(
+                new ApiError(
+                        HttpStatus.BAD_REQUEST.value(),
+                        ex.getMessage()
                 )
         );
 
