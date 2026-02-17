@@ -2,6 +2,7 @@ package br.com.fernandes.scheduler_backend_java.service;
 
 import br.com.fernandes.scheduler_backend_java.dto.AgendamentoDTO;
 import br.com.fernandes.scheduler_backend_java.entity.AgendamentoEntity;
+import br.com.fernandes.scheduler_backend_java.entity.Enum.StatusPagamento;
 import br.com.fernandes.scheduler_backend_java.entity.PessoaEntity;
 import br.com.fernandes.scheduler_backend_java.exception.agendamento.AgendamentoNotFoundException;
 import br.com.fernandes.scheduler_backend_java.exception.agendamento.FilterNullException;
@@ -34,7 +35,7 @@ public class AgendamentoService {
         AgendamentoEntity agendamentoEntity = new AgendamentoEntity();
         agendamentoEntity.setDataAgendamento(agendamento.dataAgendamento());
         agendamentoEntity.setValor(agendamento.valor());
-        agendamentoEntity.setPago(agendamento.pago());
+        agendamentoEntity.setPago(agendamento.pago() == null ? StatusPagamento.PENDENTE : agendamento.pago());
         agendamentoEntity.setPessoa(pessoa);
 
         return agendamentoRepository.save(agendamentoEntity);

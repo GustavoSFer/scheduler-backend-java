@@ -26,7 +26,7 @@ public class AgendamentoEntity implements Serializable {
     @JoinColumn(name = "pessoa_id", nullable = false)
     PessoaEntity pessoa;
     @Enumerated(EnumType.STRING)
-    @Column(name = "status_pagamento", nullable = false)
+    @Column(name = "status_pagamento")
     StatusPagamento pago;
 
 }

@@ -25,7 +25,6 @@ public record AgendamentoDTO(
         Long pessoa,
 
         @JsonProperty("pago")
-        @NotNull(message = "O status de pagamento é obrigatório")
         StatusPagamento pago
 ) {
 }
