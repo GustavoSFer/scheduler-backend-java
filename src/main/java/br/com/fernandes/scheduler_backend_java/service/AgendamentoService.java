@@ -57,4 +57,8 @@ public class AgendamentoService {
 
         return agendamentoRepository.findAllByDataAgendamentoBetweenDay(startOfDay, startOfNextDay);
     }
+
+    public List<AgendamentoEntity> findAllFilter(LocalDateTime dataAgendamentoInicio, LocalDateTime dataAgendamentoFim) {
+        return agendamentoRepository.findAllByDataAgendamentoBetweenDay(dataAgendamentoInicio, dataAgendamentoFim);
+    }
 }

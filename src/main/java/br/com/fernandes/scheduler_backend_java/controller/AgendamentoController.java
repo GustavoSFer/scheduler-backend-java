@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,6 +60,21 @@ public class AgendamentoController {
                 .collect(toList());
 
         return ResponseEntity.ok().body(agendamentoResponseDTOS);
+    }
+
+    @GetMapping("/filterData")
+    public ResponseEntity<List<AgendamentoResponseDTO>> findAllFilter(
+            @RequestParam(required = false) LocalDateTime dataAgendamentoInicio,
+            @RequestParam(required = false) LocalDateTime dataAgendamentoFim
+            ) {
+        List<AgendamentoEntity> agendamentos = agendamentoService.findAllFilter(dataAgendamentoInicio, dataAgendamentoFim);
+
+        List<AgendamentoResponseDTO> agendamentosFiltrados = agendamentos.stream()
+                .map(AgendamentoMapper::AgendamentoEntityToAgendamentoResponseDTO)
+                .collect(toList());
+
+        return ResponseEntity.ok().body(agendamentosFiltrados);
+
     }
 
 }
