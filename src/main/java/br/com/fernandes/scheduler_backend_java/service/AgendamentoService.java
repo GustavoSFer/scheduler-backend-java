@@ -4,6 +4,7 @@ import br.com.fernandes.scheduler_backend_java.dto.AgendamentoDTO;
 import br.com.fernandes.scheduler_backend_java.entity.AgendamentoEntity;
 import br.com.fernandes.scheduler_backend_java.entity.PessoaEntity;
 import br.com.fernandes.scheduler_backend_java.exception.agendamento.AgendamentoNotFoundException;
+import br.com.fernandes.scheduler_backend_java.exception.agendamento.FilterNullException;
 import br.com.fernandes.scheduler_backend_java.repository.AgendamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,6 +60,9 @@ public class AgendamentoService {
     }
 
     public List<AgendamentoEntity> findAllFilter(LocalDateTime dataAgendamentoInicio, LocalDateTime dataAgendamentoFim) {
+        if (dataAgendamentoInicio != null && dataAgendamentoFim == null) {
+            throw new FilterNullException("O filtro de data de fim é obrigatório quando o filtro de data de início é fornecido.");
+        }
         return agendamentoRepository.findAllByDataAgendamentoBetweenDay(dataAgendamentoInicio, dataAgendamentoFim);
     }
 }
