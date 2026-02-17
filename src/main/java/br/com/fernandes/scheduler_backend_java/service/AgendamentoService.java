@@ -60,9 +60,18 @@ public class AgendamentoService {
     }
 
     public List<AgendamentoEntity> findAllFilter(LocalDateTime dataAgendamentoInicio, LocalDateTime dataAgendamentoFim) {
-        if (dataAgendamentoInicio != null && dataAgendamentoFim == null) {
-            throw new FilterNullException("O filtro de data de fim é obrigatório quando o filtro de data de início é fornecido.");
+        if ((dataAgendamentoInicio != null && dataAgendamentoFim == null) || (dataAgendamentoInicio == null && dataAgendamentoFim != null)) {
+            throw new FilterNullException("Os filtros de data inicial e final devem ser fornecidos juntos.");
         }
+
+        if (dataAgendamentoInicio == null && dataAgendamentoFim == null) {
+           return findAll();
+        }
+
+        if (dataAgendamentoInicio.isAfter(dataAgendamentoFim)) {
+            throw new IllegalArgumentException("dataAgendamentoInicio não pode ser posterior a dataAgendamentoFim.");
+        }
+
         return agendamentoRepository.findAllByDataAgendamentoBetweenDay(dataAgendamentoInicio, dataAgendamentoFim);
     }
 }
