@@ -93,7 +93,7 @@
 }
 ```
 
-[GET - HOJE] /agendamentos/today
+## [GET - HOJE] /agendamentos/today
 [Response]
 ```
 [
@@ -107,7 +107,7 @@
 ]
 ```
 
-[GET - FILTRO DATA] /agendamentos/filterData
+## [GET - FILTRO DATA] /agendamentos/filterData
 [Query Params]
 - `dataAgendamentoInicio`: Data de início 2026-01-17T14:30:00
 - `dataAgendamentoFim`: Data de fim 2026-02-17T14:30:00
