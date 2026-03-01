@@ -1,9 +1,12 @@
 package br.com.fernandes.scheduler_backend_java.exception;
 
+import br.com.fernandes.scheduler_backend_java.exception.agendamento.AgendamentoNotFoundException;
+import br.com.fernandes.scheduler_backend_java.exception.agendamento.FilterNullException;
 import br.com.fernandes.scheduler_backend_java.exception.pessoa.PessoaNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -52,4 +55,57 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(error));
     }
 
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleMessageNotReadableException(HttpMessageNotReadableException ex) {
+        List<ApiError> error = new ArrayList<>();
+
+        error.add(
+                new ApiError(
+                        HttpStatus.BAD_REQUEST.value(),
+                        "Valor inválido. Opções aceitas: PAGO, CANCELADO, ESTORNADO, PENDENTE."
+                )
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(error));
+    }
+
+    @ExceptionHandler(AgendamentoNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleAgendamentoNotFound(AgendamentoNotFoundException ex) {
+        List<ApiError> error = new ArrayList<>();
+
+        error.add(
+                new ApiError(
+                        HttpStatus.BAD_REQUEST.value(),
+                        ex.getMsg()
+                )
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(error));
+    }
+
+    @ExceptionHandler(FilterNullException.class)
+    public ResponseEntity<ErrorResponse> handleFilterNullException(FilterNullException ex) {
+        List<ApiError> error = new ArrayList<>();
+
+        error.add(
+                new ApiError(
+                        HttpStatus.BAD_REQUEST.value(),
+                        ex.getMessage()
+                )
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(error));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
+        List<ApiError> error = new ArrayList<>();
+        error.add(
+                new ApiError(
+                        HttpStatus.BAD_REQUEST.value(),
+                        ex.getMessage()
+                )
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(error));
+    }
 }
